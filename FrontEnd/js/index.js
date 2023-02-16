@@ -1,4 +1,10 @@
 let currentCategory = null;
+const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+
+if (isLoggedIn) {
+  document.getElementById("login").style.display = "none";
+  document.getElementById("logout").style.display = "block";
+}
 
 const categories = [
     { id: null, name: "Tous" },

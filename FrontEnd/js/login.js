@@ -15,6 +15,7 @@ form.addEventListener("submit", (e) => {
         throw new Error("Erreur dans l'identifiant ou le mot de passe");
       }
       else {
+        sessionStorage.setItem('isLoggedIn', true);
         window.location.href = "index.html"; // TODO index with edit options 
       }
     })
