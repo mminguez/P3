@@ -2,9 +2,9 @@ let currentCategory = null;
 const isLoggedIn = sessionStorage.getItem("isLoggedIn");
 
 if (isLoggedIn) {
-  document.getElementById("login").style.display = "none";
-  document.getElementById("logout").style.display = "block";
-  document.getElementById("modify").style.display = "inline-block";
+    document.getElementById("login").style.display = "none";
+    document.getElementById("logout").style.display = "block";
+    document.getElementById("modify").style.display = "inline-block";
 }
 
 const categories = [
@@ -43,7 +43,7 @@ function filterWorksByCategory() {
         .then(listWorks => listWorks.json())
         .then(jsonListWorks => {
             if (currentCategory) {
-                jsonListWorks = jsonListWorks.filter(function(work) { return work.category.id == currentCategory});
+                jsonListWorks = jsonListWorks.filter(function (work) { return work.category.id == currentCategory });
             }
             document.querySelector(".gallery").innerHTML = "";
             for (let jsonWork of jsonListWorks) {
