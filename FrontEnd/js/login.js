@@ -14,11 +14,13 @@ form.addEventListener("submit", (e) => {
       if (response.status !== 200) {
         throw new Error("Erreur dans l'identifiant ou le mot de passe");
       }
-      else {
-        sessionStorage.setItem('isLoggedIn', true);
-        window.location.href = "index.html"; // TODO index with edit options 
-      }
+      return response.json(); 
     })
+    .then(data => {
+      sessionStorage.setItem('token', data.token)
+      sessionStorage.setItem('isLoggedIn', true);
+      window.location.href = "index.html";
+    }) 
     .catch(error => {
       alert(error.message);
     });
