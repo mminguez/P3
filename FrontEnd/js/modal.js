@@ -178,12 +178,23 @@ function getWorksModal() {
 
         input.addEventListener('change', () => {
           const file = input.files[0];
+          if (file.size > (4 * 1024 * 1024)) {
+            alert('Fichier trop gros. Sélectionnez une image plus petite.');
+            file = null;
+            return;
+          }
+          if (!file.type.match('image/png') && !file.type.match('image/jpeg')) {
+            alert('Fichier non supporté. Sélectionnez une image PNG ou JPEG.');
+            file = null;
+            return;
+          }
           const reader = new FileReader();
           reader.onload = (event) => {
             const image = document.createElement('img');
             image.src = event.target.result;
             image.style.background = "#E8F1F7"
             image.id = "image";
+
             inputContainer.replaceChild(image, photoContainer);
           };
           reader.readAsDataURL(file);
@@ -236,6 +247,7 @@ function getWorksModal() {
         form.addEventListener('input', () => {
           if (form.checkValidity()) {
             button.style.backgroundColor = '#1D6154';
+            button.style.cursor = "pointer";
           }
         });
         form.addEventListener("submit", (event) => {
