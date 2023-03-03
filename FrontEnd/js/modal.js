@@ -104,8 +104,8 @@ function getWorksModal() {
               return response.json();
             })
             .then((works) => {
-              works.forEach((work) => {
-                fetch(`http://localhost:5678/api/works/${work.id}`, {
+              const deleteRequests = works.map((work) => {
+                return fetch(`http://localhost:5678/api/works/${work.id}`, {
                   method: "DELETE",
                   headers: {
                     'Authorization': `Bearer ${token}`
@@ -121,13 +121,20 @@ function getWorksModal() {
                     console.error("Error:", error);
                   });
               });
-              window.location.href = "index.html";
+              Promise.all(deleteRequests)
+                .then(() => {
+                  window.location.href = "index.html";
+                })
+                .catch((error) => {
+                  console.error("Error:", error);
+                });
             })
             .catch((error) => {
               console.error("Error:", error);
             });
         }
       });
+
 
       const addPhotoButton = document.querySelector(".modalFooter button");
 
@@ -236,10 +243,10 @@ function getWorksModal() {
           const title = document.getElementById("title").value;
           const category = document.getElementById("category").value;
 
-          const formData = new FormData(); 
+          const formData = new FormData();
           formData.append('category', category);
-          formData.append('title', title); 
-          formData.append('image', input.files[0]); 
+          formData.append('title', title);
+          formData.append('image', input.files[0]);
 
           fetch("http://localhost:5678/api/works", {
             method: "POST",
@@ -252,7 +259,7 @@ function getWorksModal() {
               if (!response.ok) {
                 throw new Error("Network response was not ok");
               }
-              getWorksModal();
+              window.location.href = "index.html";
               return response.json();
             })
             .catch((error) => {
