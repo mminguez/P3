@@ -176,6 +176,7 @@ function getWorksModal() {
             const image = document.createElement('img');
             image.src = event.target.result;
             image.style.background = "#E8F1F7"
+            image.id = "image";
             inputContainer.replaceChild(image, photoContainer);
           };
           reader.readAsDataURL(file);
@@ -186,6 +187,8 @@ function getWorksModal() {
         title.name = "Titre"
         title.value = "";
         title.required = true;
+        title.id = "title";
+
         var titLabel = document.createElement('label');
         titLabel.innerHTML = "Titre";
         var catLabel = document.createElement('label');
@@ -193,6 +196,8 @@ function getWorksModal() {
         const categorySelect = document.createElement("select");
         categorySelect.setAttribute("name", "category_id");
         categorySelect.required = true;
+        categorySelect.id = "category";
+
         const defaultCategoryOption = document.createElement("option");
         defaultCategoryOption.setAttribute("value", "");
         categorySelect.appendChild(defaultCategoryOption);
@@ -210,6 +215,7 @@ function getWorksModal() {
         button.type = 'submit';
 
         const form = document.createElement('form');
+        form.setAttribute('enctype', 'multipart/form-data');
         form.appendChild(inputContainer);
         form.appendChild(titLabel);
         form.appendChild(title);
@@ -229,15 +235,18 @@ function getWorksModal() {
           event.preventDefault();
           const title = document.getElementById("title").value;
           const category = document.getElementById("category").value;
-          const imageUrl = document.getElementById("imageUrl").value;
+
+          const formData = new FormData(); 
+          formData.append('category', category);
+          formData.append('title', title); 
+          formData.append('image', input.files[0]); 
 
           fetch("http://localhost:5678/api/works", {
             method: "POST",
             headers: {
-              "Content-Type": "application/json",
               'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify({ title, category, imageUrl })
+            body: formData
           })
             .then((response) => {
               if (!response.ok) {
