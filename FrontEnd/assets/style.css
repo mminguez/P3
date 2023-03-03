@@ -519,6 +519,7 @@ footer nav ul {
 .modal-content .submitButton {
 	border: none;
 	background-color: #A7A7A7;
+	cursor: not-allowed;
 }
 
 .file-input-container .fa-regular {
